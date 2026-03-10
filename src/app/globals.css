@@ -1,24 +1,492 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------------------------------------
+   THEME TOKENS (Tailwind v4 way)
+----------------------------------------*/
+@theme {
+  /* Container */
+  --container-2xl: 1400px;
+
+  /* Font */
+  --font-sans: "Figtree", sans-serif;
+
+  /* Custom Colors */
+  --color-black: #000;
+  --color-black-100: #000000;
+  --color-black-200: rgba(17, 25, 40, 0.75);
+  --color-black-300: rgba(255, 255, 255, 0.125);
+
+  --color-white: #fff;
+  --color-white-100: #bec1dd;
+  --color-white-200: #c1c2d3;
+
+  --color-blue-100: #e4ecff;
+  --color-purple: #cbacf9;
+
+  /* Semantic colors (CSS variable driven) */
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  /* Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --breakpoint-2xl: 105rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
-
-@media (prefers-color-scheme: dark) {
+/* ---------------------------------------
+   GLOBAL COLOR VARIABLES (like plugin did)
+----------------------------------------*/
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --black: #000;
+    --white: #fff;
+    --blue-100: #e4ecff;
+    --purple: #cbacf9;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Poppins, sans-serif;
+/* ---------------------------------------
+   KEYFRAMES
+----------------------------------------*/
+@layer utilities {
+  @keyframes bg-position {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes spotlight {
+    0% {
+      opacity: 0;
+      transform: translate(-72%, -62%) scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -40%) scale(1);
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @keyframes moveHorizontal {
+    0% {
+      transform: translateX(-50%) translateY(-10%);
+    }
+    50% {
+      transform: translateX(50%) translateY(10%);
+    }
+    100% {
+      transform: translateX(-50%) translateY(-10%);
+    }
+  }
+
+  @keyframes moveInCircle {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes moveVertical {
+    0% {
+      transform: translateY(-50%);
+    }
+    50% {
+      transform: translateY(50%);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+
+  @keyframes scroll {
+    to {
+      transform: translate(calc(-50% - 0.5rem));
+    }
+  }
+
+  /* ---------------------------------------
+     ANIMATION UTILITIES
+  ----------------------------------------*/
+
+  .animate-bg-position {
+    animation: bg-position 3s ease-in-out infinite alternate;
+  }
+
+  .animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+
+  .animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  .animate-spotlight {
+    animation: spotlight 2s ease 0.75s 1 forwards;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+  }
+
+  .animate-first {
+    animation: moveVertical 30s ease infinite;
+  }
+
+  .animate-second {
+    animation: moveInCircle 20s reverse infinite;
+  }
+
+  .animate-third {
+    animation: moveInCircle 40s linear infinite;
+  }
+
+  .animate-fourth {
+    animation: moveHorizontal 40s ease infinite;
+  }
+
+  .animate-fifth {
+    animation: moveInCircle 20s ease infinite;
+  }
+
+  .animate-scroll {
+    animation: scroll var(--animation-duration, 40s)
+      var(--animation-direction, forwards) linear infinite;
+  }
+}
+
+/* ---------------------------------------
+   GRID + DOT BACKGROUND UTILITIES
+   (replaces matchUtilities plugin)
+----------------------------------------*/
+
+@utility bg-grid {
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='100' height='100' fill='none' stroke='currentColor'>\
+<path d='M0 .5H31.5V32'/>\
+</svg>");
+}
+
+@utility bg-grid-small {
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='8' height='8' fill='none' stroke='currentColor'>\
+<path d='M0 .5H31.5V32'/>\
+</svg>");
+}
+
+@utility bg-dot {
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='16' height='16' fill='none'>\
+<circle fill='currentColor' cx='10' cy='10' r='1.6257413380501518'/>\
+</svg>");
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border !scroll-smooth !cursor-none;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  button {
+    @apply active:outline-none;
+  }
+}
+
+@layer utilities {
+  .heading {
+    @apply font-bold text-4xl md:text-5xl text-center;
+  }
+
+  .variable-proximity {
+    font-family: "Roboto Flex", "Inter", system-ui, sans-serif;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    font-variation-settings:
+      "wght" 400,
+      "opsz" 9;
+  }
+
+  /* Hamburger menu animations */
+  .hamburger-line {
+    transform-origin: center;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Mobile menu slide-in animation */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .mobile-menu-enter {
+    animation: slideInRight 0.3s ease-out forwards;
+  }
+
+  /* Prevent body scroll when menu is open */
+  .menu-open {
+    overflow: hidden;
+  }
+  @media only screen and (min-width: 1170px) {
+    .vertical-timeline.vertical-timeline--two-columns {
+      width: 100% !important;
+      max-width: max-content !important;
+    }
+    .vertical-timeline-element-date {
+      padding-left: 0px !important;
+    }
+  }
+  .vertical-timeline-element-date {
+    padding-left: 30px !important;
+  }
+  .vertical-timeline--two-columns .vertical-timeline-element-content {
+    padding: 0 !important;
+    border-radius: 1.75rem !important;
+  }
+
+  .vertical-timeline:before {
+    width: 2px !important;
+    height: 98% !important;
+    top: 2% !important;
+  }
+  @keyframes marquee {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+
+  @keyframes marquee-reverse {
+    0% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 15s linear infinite;
+  }
+
+  .animate-marquee-reverse {
+    animation: marquee-reverse 15s linear infinite;
+  }
+
+  .preloader-wrapper {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .preloader-wrapper.fade-out {
+    opacity: 0;
+  }
+
+  .loader {
+    height: 100px;
+    aspect-ratio: 2.5/1;
+    border-bottom: 4px solid #fff0;
+    background: linear-gradient(90deg, #fff 50%, #0000 0) -25% 100%/50% 3px
+      repeat-x border-box;
+    position: relative;
+    animation: l3-0 0.75s linear infinite;
+  }
+
+  .loader:before {
+    content: "";
+    position: absolute;
+    inset: auto 37% 0;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: l3-1 0.75s cubic-bezier(0, 900, 1, 900) infinite;
+    @apply !bg-gradient-to-r from-blue-400 via-purple to-blue-400;
+  }
+
+  @keyframes l3-0 {
+    to {
+      background-position: -125% 100%;
+    }
+  }
+
+  @keyframes l3-1 {
+    0%,
+    2% {
+      bottom: 0%;
+    }
+    98%,
+    to {
+      bottom: 0.1%;
+    }
+  }
+}
+
+@theme inline {
+  --animate-grid: grid 15s linear infinite;
+
+  @keyframes grid {
+    0% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
 }

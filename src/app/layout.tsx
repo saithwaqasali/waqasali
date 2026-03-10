@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import "./globals.css";
+import { Figtree } from "next/font/google";
 
-const poppins = Poppins({ 
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-poppins",
-  subsets: ["latin"]
-});
+import "./globals.css";
+import { ThemeProvider } from "./provider";
+// import Header from "@/components/Header";
+import ScrollProgressIndicator from "@/components/ScrollProgressIndicator";
+import CustomCursor from "@/components/CustomCursor";
+import { ReactLenis } from "lenis/react";
+import PreLoader from "@/components/PreLoader";
+
+const figtree = Figtree({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Saith Waqas ali",
-  description: "SSE & TL | Full-Stack Engineer (React.js, Next.js, Vue.js, Node.js, NestJS) | Web3 (Web3.js, Ethers.js, RainbowKit) | 3D & Motion (Three.js, GSAP, WebGPU) | AWS Certified",
+  description:
+    "SSE & TL | Full-Stack Engineer (React.js, Next.js, Vue.js, Node.js, NestJS) | Web3 (Web3.js, Ethers.js, RainbowKit) | 3D & Motion (Three.js, GSAP, WebGPU) | AWS Certified",
 };
 
 export default function RootLayout({
@@ -19,11 +23,68 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${poppins.variable} antialiased`}
-      >
-        {children}
+    <html
+      lang="en"
+      suppressHydrationWarning
+    >
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+        />
+        <link
+          rel="icon"
+          href="/favicon.ico"
+          sizes="any"
+        />
+        <link
+          rel="icon"
+          href="/parth-profile.jpg"
+          type="image/jpeg"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="/parth-profile.jpg"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={figtree.className + " overflow-x-hidden"}>
+        <ReactLenis
+          root
+          options={{
+            lerp: 0.1,
+            duration: 1.4,
+          }}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {/* <Header /> */}
+            <PreLoader />
+            {children}
+            <CustomCursor />
+            <ScrollProgressIndicator />
+          </ThemeProvider>
+        </ReactLenis>
       </body>
     </html>
   );
